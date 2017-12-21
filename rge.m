@@ -8,13 +8,13 @@
 clear;
 timeElapsed = cputime;
 % Masses, VEVs and Yukawa couplings at energy scale MZ
-mt = 172.44;        % Top quark mass
-mb = 4.18;          % Bottom quark mass
-mh = 125.09;        % Higgs mass
-mtau = 1.777;       % Tau mass
-mn = 2e13;          % Heavy neutrino mass
-v = 246;            % SM Higgs VEV
-vS = 1e14;          % Scalar singlet VEV
+mt = 172.44;         % Top quark mass
+mb = 4.18;           % Bottom quark mass
+mh = 125.09;         % Higgs mass
+mtau = 1.777;        % Tau mass
+v = 246;             % SM Higgs VEV
+vS = 1e14;           % Scalar singlet VEV
+mn = 0.2*vS;         % Heavy neutrino mass
 yt0 = mt*sqrt(2)/v;  % Top quark Yukawa coupling
 yb0 = mb*sqrt(2)/v;  % Bottom quark Yukawa coupling
 ytau0 = mtau*sqrt(2)/v;  % Tau Yukawa coupling
@@ -34,7 +34,7 @@ g20 = 0.652;         % SU(2) gauge coupling at MZ
 g30 = 1.221;         % SU(3) gauge coupling at MZ
 q = -1/3;           % Extra quark-like field charge in e-units
 nf = 6;             % Number of flavors
-ng = nf/2;
+ng = nf/2;          % Number of generations
 
 % Constants from Phys. Rev. D 46.3945
 b1 = -4/3*ng-1/10;
