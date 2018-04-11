@@ -5,3 +5,9 @@ e904*
 *.txt
 quarticterms.m
 *.jpg
+*.png
+*.pdf
+*.aux
+*.log
+*.gz
+*.tex
