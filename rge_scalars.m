@@ -7,7 +7,7 @@
 % v = mu/sqrt(lambda)
 clear;
 timeElapsed = cputime;
-debug = false;        % False = save data, no output in console
+debug = true;        % False = save data, no output in console
 prefix = 'April10_yF';
 % Masses, VEVs and Yukawa couplings at energy scale MZ
 mt = 172.44;         % Top quark mass
@@ -39,9 +39,9 @@ lambdaS0 = 5e-9;        % Scalar singlet self-coupling 5e-9
 lambdaHS0 = 7e-6;       % Scalar singlet-doublet coupling 7e-6
 muH0 = mh;
 muS0 = vS*sqrt(lambdaS0); % Scalar singlet mu parameter
-for k=1:50
-    yf0 = k*1e-3;
-    yq0 = yf0;
+%for k=1:50
+    %yf0 = k*1e-3; yq0 = yf0;
+    
     % THIS IS WHERE THE ACTION BEGINS
     % Initial values (all)
     x0 = [g10 g20 g30 yt0 yb0 ytau0 yf0 lambdaH0 muH0^2 yq0 lambdaS0 lambdaHS0 muS0^2 yn0];
@@ -82,7 +82,7 @@ for k=1:50
     subplot(1,2,2);
     xlabel('log_{10} \mu/GeV');
     plot(t, lambdaH); hold on; plot(t, 10^7*lambdaS); plot(t, 10^4*lambdaHS);
-    ylim([0 0.5]);
+    ylim([-0.5 0.5]);
     h = suptitle([num2str(nscale), 'm_N = v_\sigma = ', num2str(vS,3), ' GeV, \lambda_S = ', num2str(lambdaS0), ', \lambda_{HS} = ', num2str(lambdaHS0), ', Y_F = ', num2str(yf0) , ', Y_Q = ', num2str(yq0)]);
     set(h,'FontSize',15,'FontWeight','bold');
 %    title([num2str(100/(2*k),3),'m_N = v_\sigma = ', num2str(vS,3), ' GeV, \lambda_S = ', num2str(lambdaS0), ', \lambda_{HS} = ', num2str(lambdaHS0)],'FontSize',20);
@@ -95,8 +95,7 @@ for k=1:50
         end
         saveas(gcf,filename);
     end
-    close(f);
-end
+%end
 if(~debug)
     fprintf('Time elapsed: %.2f seconds.\n', cputime - timeElapsed);
 end
