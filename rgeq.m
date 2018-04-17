@@ -14,7 +14,7 @@ b3 = 11-4/3*ng;
 b = diag([0 136/3 102]) - ng*[[19/5 1/5 11/30];[3/5 49/3 3/2];[44/15 4 76/3]] - [[9/50 3/10 0];[9/10 13/6 0];[0 0 0]];
 C = [[17/10 1/2 3/2];[3/2 3/2 1/2];[2 2 0]];
 %         1   2   3   4   5     6   7        8      9  10       11        12     13  14
-% x0 = [g10 g20 g30 yt0 yb0 ytau0 yf0 lambdaH0 muH0^2 yq0 lambdaS0 lambdaHS0 muS0^2 yn0];
+% x0 = [g10 g20 g30 yu0 yd0   ye0 yf0 lambdaH0 muH0^2 yq0 lambdaS0 lambdaHS0 muS0^2 yn0];
 
 % FULL SET HERE, note: mh0 = \mu_H^2 and ms0 = \mu_S^2, lhs0 = \lambda_{HS}
 g10 = x(1); g20 = x(2); g30 = x(3);  yu0 = x(4);  yd0 = x(5);   ye0 = x(6);  yf0 = x(7);
