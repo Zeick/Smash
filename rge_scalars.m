@@ -34,7 +34,7 @@ mn = 1/nscale*vS;       % Heavy neutrino mass
 yn0 = mn*sqrt(2)/vS;    % Majorana neutrino Yukawa coupling
 
 % Scalar potential parameters
-lambdaH0 = mh^2/(2*v^2);% SM Higgs self-coupling at MZ
+lambdaH0 = mh^2/(v^2);  % SM Higgs self-coupling at MZ
 lambdaS0 = 5e-9;        % Scalar singlet self-coupling 5e-9
 lambdaHS0 = 7e-6;       % Scalar singlet-doublet coupling 7e-6
 muH0 = mh;

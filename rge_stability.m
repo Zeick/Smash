@@ -34,7 +34,7 @@ mn = 1/nscale*vS;       % Heavy neutrino mass
 yn0 = mn*sqrt(2)/vS;    % Majorana neutrino Yukawa coupling
 
 % Scalar potential parameters
-lambdaH0 = mh^2/(2*v^2);% SM Higgs self-coupling at MZ
+lambdaH0 = mh^2/(v^2);% SM Higgs self-coupling at MZ
 lambdaS0 = 5e-9;        % Scalar singlet self-coupling 5e-9
 lambdaHS0 = 7e-6;       % Scalar singlet-doublet coupling 7e-6
 muH0 = mh;
@@ -43,17 +43,19 @@ mtRange = 164:182;
 mhRange = 110:140;
 %exprange = -7:0.5:-4; lhsRange = 10.^exprange;
 %lhsRange = [-lhsRange lhsRange]; % Take also negative value into account
-stabilityLimit = zeros(length(mtRange),length(mhRange), length(lhsRange), length(lhsRange));
+
+stabilityLimit = zeros(length(mtRange), length(mhRange));
+%stabilityLimit = zeros(length(mtRange),length(mhRange), length(lhsRange), length(lhsRange));
 %                               mtop           mhiggs         lambda_HS         lambda_HS
 
-lhsIndex = 0;
-for lambdaHS0 = lhsRange
-    fprintf('LHS = %.2g. Time elapsed: %.2f seconds.\n', lambdaHS0, cputime - timeElapsed);
-    lhsIndex = lhsIndex + 1;
-    lsIndex = 0;
-    for lsCoef = 10:200:1000
-        lambdaS = lsCoef*lambdaHS0^2;
-        lsIndex = lsIndex + 1;
+% lhsIndex = 0;
+% for lambdaHS0 = lhsRange
+%     fprintf('LHS = %.2g. Time elapsed: %.2f seconds.\n', lambdaHS0, cputime - timeElapsed);
+%     lhsIndex = lhsIndex + 1;
+%     lsIndex = 0;
+%     for lsCoef = 10:200:1000
+%         lambdaS = lsCoef*lambdaHS0^2;
+%         lsIndex = lsIndex + 1;
         mtIndex = 0;
         for mt = mtRange
             mtIndex = mtIndex + 1;
@@ -63,6 +65,7 @@ for lambdaHS0 = lhsRange
                 stable = true;
                 yt0 = mt*sqrt(2)/v;
                 muH0 = mh;
+                lambdaH0 = mh^2/(v^2);
                 % THIS IS WHERE THE ACTION BEGINS
                 % Initial values (all)
                 x0 = [g10 g20 g30 yt0 yb0 ytau0 yf0 lambdaH0 muH0^2 yq0 lambdaS0 lambdaHS0 muS0^2 yn0];
@@ -76,7 +79,8 @@ for lambdaHS0 = lhsRange
                 for k = 1:length(lambdaH)
                    if(lambdaH(k) < 0 || lambdaS(k) < 0 || lambdaH(k) > 1 || lambdaS(k) > 1)
                        stable = false;
-                       stabilityLimit(mtIndex, mhIndex, lhsIndex, lsIndex) = t(k);
+                       %stabilityLimit(mtIndex, mhIndex, lhsIndex, lsIndex) = t(k);
+                       stabilityLimit(mtIndex, mhIndex) = t(k);
                        break;
                    end
                 end
@@ -100,8 +104,13 @@ for lambdaHS0 = lhsRange
         %         close(f);
             end
         end
-    end
-end
+%    end
+%end
+figure;
+contour(mhRange, mtRange, stabilityLimit,'ShowText','On');
+xlabel('m_H/GeV'); ylabel('m_t/GeV');
+set(gca,'FontSize',15);
+
 if(~debug)
     fprintf('Time elapsed: %.2f seconds.\n', cputime - timeElapsed);
 end

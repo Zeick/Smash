@@ -35,65 +35,62 @@ yn0 = 0;
 %yn0 = mn*sqrt(2)/vS;    % Majorana neutrino Yukawa coupling
 
 % Scalar potential parameters
-lambdaH0 = mh^2/(2*v^2);% SM Higgs self-coupling at MZ
-lambdaS0 = 0;        % Scalar singlet self-coupling 5e-9
-lambdaHS0 = 0;       % Scalar singlet-doublet coupling 7e-6
 muH0 = mh;
+lambdaH0 = mh^2/(v^2);% SM Higgs self-coupling at MZ
+lambdaS0 = 0;        % Scalar singlet self-coupling 5e-9
 muS0 = vS*sqrt(lambdaS0); % Scalar singlet mu parameter
-mtRange = 164:182;
-mhRange = 110:140;
+lambdaHS0 = 0;       % Scalar singlet-doublet coupling 7e-6
+mtRange = 165:0.5:180;
+mhRange = 115:0.5:135;
 %exprange = -7:0.5:-4; lhsRange = 10.^exprange;
 %lhsRange = [-lhsRange lhsRange]; % Take also negative value into account
 stabilityLimit = zeros(length(mtRange),length(mhRange));
 %stabilityLimit = zeros(length(mtRange),length(mhRange), length(lhsRange), length(lhsRange));
 %                               mtop           mhiggs         lambda_HS         lambda_HS
+
+
 mtIndex = 0;
 for mt = mtRange
     mtIndex = mtIndex + 1;
     mhIndex = 0;
     for mh = mhRange
         mhIndex = mhIndex + 1;
-        stable = true;
+%        mh = 125; mt = 172;
         yt0 = mt*sqrt(2)/v;
         muH0 = mh;
+        lambdaH0 = mh^2/(v^2);% SM Higgs self-coupling at MZ
         % THIS IS WHERE THE ACTION BEGINS
+        % Relative and absolute error tolerances
+        opts = odeset('RelTol',1e-4,'AbsTol',1e-6);
         % Initial values (all)
-        x0 = [g10 g20 g30 yt0 yb0 ytau0 lambdaH0 muH0^2];
-        [t, x] = ode45('rgeq_SM',Escale,x0); % ODE-function, solution span, init-values, (opt.) error tolerance
+        x0 = [g10 g20 g30 yt0 yb0 ytau0 lambdaH0 muH0];
+        [t, x] = ode45('rgeq_SM',Escale,x0,opts); % ODE-function, solution span, init-values, (opt.) error tolerance
         % All parameters
-        g1 = x(:,1);  g2 = x(:,2);  g3 = x(:,3);  yt = x(:,4);  yb = x(:,5); ytau = x(:,6);
-        lambdaH = x(:,7);   muH = sqrt(x(:,8));
+        % g1 = x(:,1);  g2 = x(:,2);  g3 = x(:,3);  yt = x(:,4);  yb = x(:,5); ytau = x(:,6);
+        lambdaH = x(:,7);   %muH = sqrt(x(:,8));
         % Check if the potential is stable, ie. if quartic couplings are
         % positive
-        for k = 1:length(lambdaH)
-           if(lambdaH(k) < 0 || lambdaH(k) > 1)
-               stable = false;
-               stabilityLimit(mtIndex, mhIndex) = t(k);
-               break;
-           end
-        end
-
-%         f = figure('visible', 'off');
-%         xlabel('log_{10} \mu/GeV');
-%         plot(t, lambdaH); hold on; plot(t, 10^7*lambdaS); plot(t, 10^4*lambdaHS);
-%         ylim([0 0.5]);
-%         h = suptitle([num2str(nscale), 'm_N = v_\sigma = ', num2str(vS,3), ' GeV, \lambda_S = ', num2str(lambdaS0), ', \lambda_{HS} = ', num2str(lambdaHS0), ', Y_F = ', num2str(yf0) , ', Y_Q = ', num2str(yq0)]);
-%         set(h,'FontSize',15,'FontWeight','bold');
-%     %    title([num2str(100/(2*k),3),'m_N = v_\sigma = ', num2str(vS,3), ' GeV, \lambda_S = ', num2str(lambdaS0), ', \lambda_{HS} = ', num2str(lambdaHS0)],'FontSize',20);
-%         legend('{\fontsize{15}\lambda_H}','{\fontsize{15}10^7\lambda_S}','{\fontsize{15} 10^4\lambda_{HS}}','Location','NorthEast');
-%         if(~debug)
-%             if k < 10
-%                 filename = sprintf('%s_0%d.png',prefix,k);
-%             else
-%                 filename = sprintf('%s_%d.png',prefix,k);
-%             end
-%             saveas(gcf,filename);
-%         end
-%         close(f);
+         for k = 1:length(lambdaH)
+            if(lambdaH(k) < 0 || lambdaH(k) > 1)
+                limit = t(k);
+                stabilityLimit(mtIndex, mhIndex) = t(k);
+                break;
+            end
+         end
     end
 end
 figure;
 contour(mhRange, mtRange, stabilityLimit,'ShowText','On');
+xlabel('m_H/GeV'); ylabel('m_t/GeV');
+set(gca,'FontSize',15);
+
+% plot(t, lambdaH); hold on; h = vline(limit,'r','{\fontsize{20}Stability bound}');
+% set(gca,'FontSize',15);
+% grid on;
+% xlabel('log_{10} \mu/GeV');
+% title(['m_t = ', num2str(mt,3), ' GeV, m_h = ', num2str(mh,3),' GeV'],'FontSize',20);
+% legend('{\fontsize{15}\lambda_H}','Location','NorthEast');
 if(~debug)
     fprintf('Time elapsed: %.2f seconds.\n', cputime - timeElapsed);
 end
+fprintf('mt = %.1f, mh = %.1f, lim = %.1f\n',mt,mh,limit);
