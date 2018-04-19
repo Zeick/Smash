@@ -79,9 +79,9 @@ stabilityLimit = zeros(length(mtRange), length(mhRange));
                 % Check if the potential is stable, ie. if quartic couplings are
                 % positive
                 for k = 1:length(lambdaH)
-                    if(lambdaH(k) < 0 || lambdaS(k) < 0)
+%                    if(lambdaH(k) < 0 || lambdaS(k) < 0)
  
-%                   if(lambdaH(k) < 0 || lambdaS(k) < 0 || lambdaH(k) > 1 || lambdaS(k) > 1)
+                   if(lambdaH(k) < 0 || lambdaS(k) < 0 || lambdaH(k) > 1 || lambdaS(k) > 1)
                        stable = false;
                        %stabilityLimit(mtIndex, mhIndex, lhsIndex, lsIndex) = t(k);
                        stabilityLimit(mtIndex, mhIndex) = t(k);

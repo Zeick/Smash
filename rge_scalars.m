@@ -42,10 +42,11 @@ lambdaHS0 = 0.3;       % Scalar singlet-doublet coupling 7e-6
 muH0 = mh;
 muS0 = vS*sqrt(lambdaS0); % Scalar singlet mu parameter
 lhsRange = 0:0.005:0.5;
+%lhsRange = (0:0.005:0.5)*1e-5;
 limits = zeros(1,length(lhsRange));
 n=0;
-%for lambdaHS0 = lhsRange
-%    n=n+1;
+for lambdaHS0 = lhsRange
+    n=n+1;
     %yf0 = k*1e-3; yq0 = yf0;
     % THIS IS WHERE THE ACTION BEGINS
     % Initial values (all)
@@ -93,24 +94,24 @@ n=0;
     else
         for k = 1:length(lambdaH)
             if(lambdaH(k) < 0 || lambdaH(k) > 1)
-                %limits(n) = t(k);
-                limit = t(k);
+                limits(n) = t(k);
+                %limit = t(k);
                 break;
             end
         end
-        plot (t, lambdaH); hold on;
-        if(limit > 0)
-            vline(limit,'r','{\fontsize{20}Stability bound}');
-        end
-        ylim([-0.1, max(lambdaH)]);
-        set(gca,'XMinorTick','on','YMinorTick','on');
-        set(gca,'LineWidth',2,'TickLength',[0.025 0.025]);
-        set(gca,'FontSize',15);
-        grid on;
-        xlabel('log_{10} \mu/GeV');
-        title([num2str(nscale,3),'m_N = v_\sigma = ', num2str(vS,3), ' GeV, Y_{F/Q} = ', num2str(yf0,3), ', \lambda_{\sigma} = ', num2str(lambdaS0,3), ', \lambda_{H\sigma} = ', num2str(lambdaHS0,3)],'FontSize',15);
-        legend('{\fontsize{15}\lambda_H}','Location','NorthWest');
-        fprintf('Limit = %f\n', limit);
+%         plot (t, lambdaH); hold on;
+%         if(limit > 0)
+%             vline(limit,'r','{\fontsize{20}Stability bound}');
+%         end
+%         ylim([-0.1, max(lambdaH)]);
+%         set(gca,'XMinorTick','on','YMinorTick','on');
+%         set(gca,'LineWidth',2,'TickLength',[0.025 0.025]);
+%         set(gca,'FontSize',15);
+%         grid on;
+%         xlabel('log_{10} \mu/GeV');
+%         title([num2str(nscale,3),'m_N = v_\sigma = ', num2str(vS,3), ' GeV, Y_{F/Q} = ', num2str(yf0,3), ', \lambda_{\sigma} = ', num2str(lambdaS0,3), ', \lambda_{H\sigma} = ', num2str(lambdaHS0,3)],'FontSize',15);
+%         legend('{\fontsize{15}\lambda_H}','Location','NorthWest');
+%         fprintf('Limit = %f\n', limit);
     end
     if(~debug)
         if k < 10
@@ -120,19 +121,42 @@ n=0;
         end
         saveas(gcf,filename);
     end
-%end
+end
+nPoints = length(limits);
 for k = 1:length(limits)
    if(limits(k) == 0)
-      limits(k) = 20; 
+       nPoints = k;
+       limits(k) = 20; 
+       break;
    end
 end
-% plot(lhsRange, limits,'LineWidth',2);
-% xlim([0 0.25]);
-% ylim([10 19]);
-% set(gca,'XMinorTick','on','YMinorTick','on');
-% set(gca,'LineWidth',2,'TickLength',[0.025 0.025]);
-% set(gca,'FontSize',15);
-% grid on;
-% xlabel('\lambda_{H\sigma}');
-% ylabel('log_{10} \mu/GeV');
-% title([num2str(nscale,3),'m_N = v_\sigma = ', num2str(vS,3), ' GeV, Y_{F/Q} = ', num2str(yf0,3), ', \lambda_{\sigma} = ', num2str(lambdaS0,3)],'FontSize',15);
+lhsRange = lhsRange(1:nPoints);
+limits = limits(1:nPoints);
+%plot(lhsRange, limits,'LineWidth',1); hold on;
+
+global xdata;
+global ydata;
+xdata = lhsRange;
+ydata= limits;
+lam0=[-1.8 1 10];         % Initial guess for lambda
+y0=fobj(lam0);        % Initial value of object function
+lam=fminsearch('fobj',lam0);
+                      % lam is the fitted value for
+                      % the parameter vector
+x=0:0.005:0.25;
+%x=(0:0.005:0.5)*1e-5;
+yfit=fmodel(lam, x);
+yfinal=fobj(lam);     % Final value of the object function
+
+% Fit y = Ae^Bx+C
+%P = polyfit(lhsRange, limits, 5);
+%fittedLimits = P(1)*lhsRange.^5 + P(2)*lhsRange.^4 + P(3)*lhsRange.^3 + P(4)*lhsRange.^2 + P(5)*lhsRange + P(6);
+plot(x, yfit,'LineWidth',2);
+set(gca,'XMinorTick','on','YMinorTick','on');
+set(gca,'LineWidth',2,'TickLength',[0.025 0.025]);
+set(gca,'FontSize',15);
+grid on;
+xlabel('\lambda_{H\sigma}');
+ylabel('log_{10} \mu/GeV');
+ylim([12 19]);
+title([num2str(nscale,3),'m_N = v_\sigma = ', num2str(vS,3), ' GeV, Y_{F/Q} = ', num2str(yf0,3), ', \lambda_{\sigma} = ', num2str(lambdaS0,3)],'FontSize',15);

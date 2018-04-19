@@ -13,18 +13,18 @@ mb = 4.18;           % Bottom quark mass
 mh = 125.09;         % Higgs mass
 mtau = 1.777;        % Tau mass
 v = 246;             % SM Higgs VEV
-vS = 1e11;           % Scalar singlet VEV
-mn = 0.2*vS;         % Heavy neutrino mass
+vS = 1e10;           % Scalar singlet VEV
+mn = 0.01*vS;         % Heavy neutrino mass
 yt0 = mt*sqrt(2)/v;  % Top quark Yukawa coupling
 yb0 = mb*sqrt(2)/v;  % Bottom quark Yukawa coupling
 ytau0 = mtau*sqrt(2)/v;  % Tau Yukawa coupling
 yn0 = mn*sqrt(2)/vS; % Majorana neutrino Yukawa coupling
-yf0 = 0.05;           % Dirac neutrino Yukawa coupling
-yq0 = 0.1;           % New quark Yukawa coupling
+yf0 = 1e-3;           % Dirac neutrino Yukawa coupling
+yq0 = 1e-3;           % New quark Yukawa coupling
 % Scalar potential parameters
-lambdaH0 = mh^2/(2*v^2); % SM Higgs self-coupling at MZ
-lambdaS0 = 1e-12;            % Scalar singlet self-coupling
-lambdaHS0 = 2e-5;           % Scalar singlet-doublet coupling
+lambdaH0 = mh^2/(v^2); % SM Higgs self-coupling at MZ
+lambdaS0 = 5e-9;            % Scalar singlet self-coupling
+lambdaHS0 = 0.5;           % Scalar singlet-doublet coupling
 muH0 = mh;
 muS0 = vS*sqrt(lambdaS0); % Scalar singlet mu parameter
 
@@ -65,24 +65,34 @@ lambdaS = x(:,11);  lambdaHS = x(:,12);   muS = sqrt(x(:,13));       yn = x(:,14
 %  yf = x(:,7);  lambdaH = x(:,8);           yq = x(:,9);
 %  lambdaS = x(:,10);  lambdaHS = x(:,11);   yn = x(:,12);
 
+% figure;
+% subplot(2,3,1);
+% plot(t,g1); hold on; plot(t,g2); plot(t,g3); 
+% ylim([0 2.5]); xlabel('log_{10} \mu/GeV');
+% legend('{\fontsize{15}g_1}','{\fontsize{15}g_2}','{\fontsize{15}g_3}','Location','NorthEast');
+% subplot(2,3,2);
+% plot(t,yt); hold on; plot(t, yn); xlabel('log_{10} \mu/GeV');
+% legend('{\fontsize{15}y_t}','{\fontsize{15}y_N}','Location','NorthEast');
+% subplot(2,3,3);
+% plot(t, yb); hold on; plot(t, ytau); plot(t, yf); plot(t, yq); xlabel('log_{10} \mu/GeV');
+% legend('{\fontsize{15}y_b}','{\fontsize{15}y_\tau}','{\fontsize{15}y_F}','{\fontsize{15}y_Q}','Location','NorthEast');
+% subplot(2,3,4);
+% plot(t, lambdaH); hold on; plot(t, 10^2*lambdaS); plot(t, 10^4*lambdaHS);
+% xlabel('log_{10} \mu/GeV'); % ylim([0 1.0]); 
+% legend('{\fontsize{15}\lambda_H}','{\fontsize{15}100\lambda_S}','{\fontsize{15} 10^4\lambda_{HS}}','Location','NorthEast');
+% subplot(2,3,5);
+% plot(t, muH); hold on; plot(t, muS/10^2);
+% ylabel('GeV'); xlabel('log_{10} \mu/GeV');
+% legend('{\fontsize{15}m_H}','{\fontsize{15}0.01m_S}','Location','NorthEast');
+% h = suptitle(['5m_N = v_\sigma = ', num2str(vS,3), ' GeV, \lambda_S = ', num2str(lambdaS0), ', \lambda_{HS} = ', num2str(lambdaHS0), ', Y_F = ', num2str(yf0) , ', Y_Q = ', num2str(yq0)]);
+% set(h,'FontSize',20,'FontWeight','bold');
+
 figure;
-subplot(2,3,1);
-plot(t,g1); hold on; plot(t,g2); plot(t,g3); 
-ylim([0 2.5]); xlabel('log_{10} \mu/GeV');
-legend('{\fontsize{15}g_1}','{\fontsize{15}g_2}','{\fontsize{15}g_3}','Location','NorthEast');
-subplot(2,3,2);
-plot(t,yt); hold on; plot(t, yn); xlabel('log_{10} \mu/GeV');
-legend('{\fontsize{15}y_t}','{\fontsize{15}y_N}','Location','NorthEast');
-subplot(2,3,3);
-plot(t, yb); hold on; plot(t, ytau); plot(t, yf); plot(t, yq); xlabel('log_{10} \mu/GeV');
-legend('{\fontsize{15}y_b}','{\fontsize{15}y_\tau}','{\fontsize{15}y_F}','{\fontsize{15}y_Q}','Location','NorthEast');
-subplot(2,3,4);
-plot(t, lambdaH); hold on; plot(t, 10^2*lambdaS); plot(t, 10^4*lambdaHS);
-xlabel('log_{10} \mu/GeV'); % ylim([0 1.0]); 
-legend('{\fontsize{15}\lambda_H}','{\fontsize{15}100\lambda_S}','{\fontsize{15} 10^4\lambda_{HS}}','Location','NorthEast');
-subplot(2,3,5);
-plot(t, muH); hold on; plot(t, muS/10^2);
-ylabel('GeV'); xlabel('log_{10} \mu/GeV');
-legend('{\fontsize{15}m_H}','{\fontsize{15}0.01m_S}','Location','NorthEast');
-h = suptitle(['5m_N = v_\sigma = ', num2str(vS,3), ' GeV, \lambda_S = ', num2str(lambdaS0), ', \lambda_{HS} = ', num2str(lambdaHS0), ', Y_F = ', num2str(yf0) , ', Y_Q = ', num2str(yq0)]);
-set(h,'FontSize',20,'FontWeight','bold');
+plot(t, yb,'LineWidth',2); hold on; plot(t, ytau,'LineWidth',2); 
+ylim([0 0.025]); xlim([2 19]);
+xlabel('log_{10} \mu/GeV');
+legend('{\fontsize{15}y_b}','{\fontsize{15}y_\tau}','Location','NorthEast');
+set(gca,'XMinorTick','on','YMinorTick','on');
+set(gca,'LineWidth',2,'TickLength',[0.025 0.025]);
+set(gca,'FontSize',15);
+grid on;
