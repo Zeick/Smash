@@ -4,9 +4,10 @@
 % 14.3.2018 >_<
 function z = rgeq( t, x )
 % CONSTANTS
-q = -1/3;           % Extra quark-like field charge in e-units
-nf = 6;             % Number of flavors
-ng = nf/2;          % Number of generations
+q = -1/3;           % Extra quark-like field charge in e-units -1/3 (or 2/3)
+nf = 6;          % Number of flavors
+ng = nf/2;       % Number of generations
+BSM = true;      % Turn on/off BSM effects
 % Phys. Rev. D 46.3945
 b1 = -4/3*ng-1/10;
 b2 = 22/3-4/3*ng-1/6;
@@ -90,7 +91,7 @@ yuSM = yu0*(betau1/(16*pi^2) + betau2/(16*pi^2)^2);
 ydSM = yd0*(betad1/(16*pi^2) + betad2/(16*pi^2)^2);
 yeSM = ye0*(betae1/(16*pi^2) + betae2/(16*pi^2)^2);
 lhSM = betal1/(16*pi^2) + betal2/(16*pi^2)^2;
-mhSM = 0.5*mh0*(betah1/(16*pi^2) + betah2/(16*pi^2)^2);
+mhSM = 2*mh0*(betah1/(16*pi^2) + betah2/(16*pi^2)^2);
 
 % BSM contributions added to them here, from SMASH paper
 g1 = g1SM + 12/(80*pi^2)*g10^3*q^2 + 1/(16*pi^2)^2*(108/25*g10^5*q^4 ...
@@ -98,6 +99,7 @@ g1 = g1SM + 12/(80*pi^2)*g10^3*q^2 + 1/(16*pi^2)^2*(108/25*g10^5*q^4 ...
 g2 = g2SM - g20^3/(2*(16*pi^2)^2)*yf0^2;
 g3 = g3SM + g30^3/(24*pi^2) ...
     + 1/(16*pi^2)^2*(38*g30^5/3 - g30^3*yq0^2 + 6/5*g10^2*g30^3*q^2);
+%g3 = g3SM + 1/(16*pi^2)^2*( - g30^3*yq0^2 + 6/5*g10^2*g30^3*q^2);
 % Top Yukawa
 yu = yuSM + yu0/(16*pi^2)*yf0^2 + 1/(16*pi^2)^2*(40/9*g30^4*yu0 ...
     + 2*lhs0^2*yu0 + 29/25*g10^4*q^2*yu0 + 1/8*yf0^2*(10*yd0^2*yu0 ...
@@ -114,7 +116,7 @@ ye = yeSM + 1/(16*pi^2)*(ye0*yf0^2 - 3*yf0^2*ye0/2) ...
     + g10^2*(3*ye0*yf0^2/8 - 27*yf0^2*ye0/16) ...
     + g20^2*(15*ye0*yf0^2/8 + 9*yf0^2*ye0/16) ...
     - 9*ye0*yf0^4/4 + ye0*yf0^2*ye0^2/2 + 15*yf0^2*ye0*yu0^2/4 ...
-    + 15*yf0^2*ye0*yu0^2/4 + 5*yf0^2*ye0*yf0^2/4 + 5*yf0^2*ye0*ye0^2/4 ...
+    + 5*yf0^2*ye0*yf0^2/4 + 5*yf0^2*ye0*ye0^2/4 ...
     + 11*yf0^4*ye0/4 - yf0^2*ye0^3 - 9*ye0^3*yf0^2/4 - ye0^2*yf0^2*ye0/4 ...
     + 7*yf0*yn0^2*yf0*ye0/8 - 3*ye0*yn0^2*yf0^2/4 + 99/25*ye0*g10^4*q^2);
 % SM Higgs self-coupling
@@ -130,7 +132,7 @@ mhBSM = 1/(16*pi^2)*(4*lhs0*ms0 + 2*yf0^2*mh0) ...
    + 1/(16*pi^2)^2*(9/5*g10^4*q^2*mh0 - ms0*(16*lhs0^2 + 24*yq0^2*lhs0) ...
    - 4*mh0*lhs0^2 + mh0*(3*g10^2*yf0^2/4 + 15*g20^2*yf0^2/4 - 24*yf0^2*lh0 ...
    - 7*ye0^2*yf0^2 - 9*yf0^4/2) - 3/2*yn0^2*yf0^2*mh0 - 4*yn0^2*lhs0*ms0);
-mh = mhSM + mhBSM/(2*mh0);
+mh = mhSM + mhBSM;
 % BSM parameters
 % Dirac neutrino mass Yukawa coupling
 yf = 1/(16*pi^2)*(3*yf0*yd0^2 - 9/20*yf0*g10^2 - 9*yf0*g20^2/4 + 3*yf0*yu0^2 ...
@@ -188,6 +190,23 @@ ms = 1/(16*pi^2)*(8*mh0*lhs0 + ms0*(8*ls0 + 6*yq0^2 + yn0^2)) ...
    - 32*lhs0^2) + ms0*(40*g30^2*yq0^2 - 8*lhs0^2 - 40*ls0^2 - 9*yq0^4 ...
    - 48*yq0^2*ls0) + 18*g10^2*q^2*yq0^2*ms0 - mh0*lhs0*(16*ye0^2 ...
    + 16*yf0^2) - ms0*(3/2*yn0^4 + 3*yn0^2*yf0^2 + 8*yn0^2*ls0));
+if (~BSM)
+   g1 = g1SM;
+   g2 = g2SM;
+   g3 = g3SM;
+   yu = yuSM;
+   yd = ydSM;
+   ye = yeSM;
+   lh = lhSM;
+   mh = mhSM;
+   yf = 0;
+   yq = 0;
+   ls = 0;
+   lhs = 0;
+   ms = 0;
+   yn = 0;
+end
+
 
 % All except scalar masses
 %z = [g1 g2 g3 yu yd ye yf lh yq ls lhs yn]';

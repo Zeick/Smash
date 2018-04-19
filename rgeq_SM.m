@@ -86,7 +86,7 @@ yuSM = yu0*(betau1/(16*pi^2) + betau2/(16*pi^2)^2);
 ydSM = yd0*(betad1/(16*pi^2) + betad2/(16*pi^2)^2);
 yeSM = ye0*(betae1/(16*pi^2) + betae2/(16*pi^2)^2);
 lhSM = betal1/(16*pi^2) + betal2/(16*pi^2)^2;
-mhSM = 0.5*mh0*(betah1/(16*pi^2) + betah2/(16*pi^2)^2);
+mhSM = 2*mh0*(betah1/(16*pi^2) + betah2/(16*pi^2)^2);
 
 z = [g1SM g2SM g3SM yuSM ydSM yeSM lhSM mhSM]';
 

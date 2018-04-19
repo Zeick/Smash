@@ -8,6 +8,7 @@
 clear;
 timeElapsed = cputime;
 debug = true;        % False = save data, no output in console
+lambdaOnly = true;
 prefix = 'April15_test';
 % Masses, VEVs and Yukawa couplings at energy scale MZ
 mt = 172.44;         % Top quark mass
@@ -48,7 +49,10 @@ stabilityLimit = zeros(length(mtRange),length(mhRange));
 %stabilityLimit = zeros(length(mtRange),length(mhRange), length(lhsRange), length(lhsRange));
 %                               mtop           mhiggs         lambda_HS         lambda_HS
 
-
+if lambdaOnly
+   mtRange = mt;
+   mhRange = mh;
+end
 mtIndex = 0;
 for mt = mtRange
     mtIndex = mtIndex + 1;
@@ -70,26 +74,30 @@ for mt = mtRange
         lambdaH = x(:,7);   %muH = sqrt(x(:,8));
         % Check if the potential is stable, ie. if quartic couplings are
         % positive
-         for k = 1:length(lambdaH)
-            if(lambdaH(k) < 0 || lambdaH(k) > 1)
-                limit = t(k);
-                stabilityLimit(mtIndex, mhIndex) = t(k);
-                break;
+            for k = 1:length(lambdaH)
+               if(lambdaH(k) < 0 || lambdaH(k) > 1)
+                   limit = t(k);
+                   stabilityLimit(mtIndex, mhIndex) = t(k);
+                   break;
+               end
             end
-         end
     end
 end
+if (~lambdaOnly)
 figure;
 contour(mhRange, mtRange, stabilityLimit,'ShowText','On');
 xlabel('m_H/GeV'); ylabel('m_t/GeV');
 set(gca,'FontSize',15);
-
-% plot(t, lambdaH); hold on; h = vline(limit,'r','{\fontsize{20}Stability bound}');
-% set(gca,'FontSize',15);
-% grid on;
-% xlabel('log_{10} \mu/GeV');
-% title(['m_t = ', num2str(mt,3), ' GeV, m_h = ', num2str(mh,3),' GeV'],'FontSize',20);
-% legend('{\fontsize{15}\lambda_H}','Location','NorthEast');
+else
+    plot(t, lambdaH); hold on; h = vline(limit,'r','{\fontsize{20}Stability bound}');
+    set(gca,'XMinorTick','on','YMinorTick','on');
+    set(gca,'LineWidth',2,'TickLength',[0.025 0.025]);
+    set(gca,'FontSize',15);
+    grid on;
+    xlabel('log_{10} \mu/GeV');
+    title(['m_t = ', num2str(mt,5), ' GeV, m_h = ', num2str(mh,5),' GeV'],'FontSize',20);
+    legend('{\fontsize{15}\lambda_H}','Location','NorthEast');
+end
 if(~debug)
     fprintf('Time elapsed: %.2f seconds.\n', cputime - timeElapsed);
 end
