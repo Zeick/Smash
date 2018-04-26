@@ -26,7 +26,7 @@ g20 = 0.652;         % SU(2) gauge coupling at MZ
 g30 = 1.221;         % SU(3) gauge coupling at MZ
 
 % Energy scale: 10^Escale GeV, log10(MZ/GeV) = 1.96
-Escale = [1.96 19];
+Escale = [1.96 20];
 nscale = 100; % 100
 yf0 = 0;             % Dirac neutrino Yukawa coupling 1e-3
 yq0 = yf0;              % New quark Yukawa coupling 1e-3
@@ -76,7 +76,7 @@ for mt = mtRange
         % positive
             for k = 1:length(lambdaH)
                if(lambdaH(k) < 0 || lambdaH(k) > 1)
-                   limit = t(k);
+                   limit = 0.5*(t(k) + t(k-1));
                    stabilityLimit(mtIndex, mhIndex) = t(k);
                    break;
                end
@@ -89,14 +89,19 @@ contour(mhRange, mtRange, stabilityLimit,'ShowText','On');
 xlabel('m_H/GeV'); ylabel('m_t/GeV');
 set(gca,'FontSize',15);
 else
-    plot(t, lambdaH); hold on; h = vline(limit,'r','{\fontsize{20}Stability bound}');
+    plot(t, lambdaH,'LineWidth',2); hold on; h = vline(limit,'r','{\fontsize{20}Stability bound}');
     set(gca,'XMinorTick','on','YMinorTick','on');
     set(gca,'LineWidth',2,'TickLength',[0.025 0.025]);
     set(gca,'FontSize',15);
     grid on;
     xlabel('log_{10} \mu/GeV');
-    title(['m_t = ', num2str(mt,5), ' GeV, m_h = ', num2str(mh,5),' GeV'],'FontSize',20);
-    legend('{\fontsize{15}\lambda_H}','Location','NorthEast');
+    xlim([2 20]);    ylim([-0.1 0.3]);
+    title(['m_t = ', num2str(mt,5), ' GeV, m_H = ', num2str(mh,5),' GeV'],'FontSize',20);
+    legend('{\fontsize{15}\lambda_H}','Location','NorthWest');
+    h = area([19+log(1.22) 20], [1.2 1.2], 'FaceColor', 'Black', 'LineStyle', 'none');
+    h2 = area([0 20], [-0.1 -0.1], 'FaceColor', 'Black', 'LineStyle', 'none');
+    set(h,'facealpha',.25);
+    set(h2,'facealpha',.25);
 end
 if(~debug)
     fprintf('Time elapsed: %.2f seconds.\n', cputime - timeElapsed);

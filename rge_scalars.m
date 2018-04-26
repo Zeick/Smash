@@ -72,17 +72,7 @@ for lambdaHS0 = lhsRange
         ylim([0 19]); 
         ylabel('log_{10} m_i /GeV'); xlabel('log_{10} \mu/GeV');
         legend('{\fontsize{15}m_H}','{\fontsize{15}m_S}','Location','NorthEast');
-    %    title([num2str(100/(2*k),3),'m_N = v_\sigma = ', num2str(vS,3), ' GeV, \lambda_S = ', num2str(lambdaS0), ', \lambda_{HS} = ', num2str(lambdaHS0)],'FontSize',20);
-    %    title(['5m_N = v_\sigma = ', num2str(vS,3), ' GeV, \lambda_S = ', num2str(lambdaS0), ', \lambda_{HS} = ', num2str(lambdaHS0)],'FontSize',20);
-    %     if k < 10
-    %         filename = sprintf('%s3_0%d.png','scalars',k);
-    %     else
-    %         filename = sprintf('%s3_%d.png','scalars',k);
-    %     end
-    %     saveas(gcf,filename)
-    %     close(f);
 
-    %     g = figure('visible', 'off');
         subplot(1,2,2);
         xlabel('log_{10} \mu/GeV');
         plot(t, lambdaH); hold on; plot(t, 10^7*lambdaS); plot(t, 10^4*lambdaHS);
@@ -95,23 +85,23 @@ for lambdaHS0 = lhsRange
         for k = 1:length(lambdaH)
             if(lambdaH(k) < 0 || lambdaH(k) > 1)
                 limits(n) = t(k);
-                %limit = t(k);
+                limit = t(k);
                 break;
             end
         end
-%         plot (t, lambdaH); hold on;
-%         if(limit > 0)
-%             vline(limit,'r','{\fontsize{20}Stability bound}');
-%         end
-%         ylim([-0.1, max(lambdaH)]);
-%         set(gca,'XMinorTick','on','YMinorTick','on');
-%         set(gca,'LineWidth',2,'TickLength',[0.025 0.025]);
-%         set(gca,'FontSize',15);
-%         grid on;
-%         xlabel('log_{10} \mu/GeV');
-%         title([num2str(nscale,3),'m_N = v_\sigma = ', num2str(vS,3), ' GeV, Y_{F/Q} = ', num2str(yf0,3), ', \lambda_{\sigma} = ', num2str(lambdaS0,3), ', \lambda_{H\sigma} = ', num2str(lambdaHS0,3)],'FontSize',15);
-%         legend('{\fontsize{15}\lambda_H}','Location','NorthWest');
-%         fprintf('Limit = %f\n', limit);
+        plot (t, lambdaH); hold on;
+        if(limit > 0)
+            vline(limit,'r','{\fontsize{20}Stability bound}');
+        end
+        ylim([-0.1, max(lambdaH)]);
+        set(gca,'XMinorTick','on','YMinorTick','on');
+        set(gca,'LineWidth',2,'TickLength',[0.025 0.025]);
+        set(gca,'FontSize',15);
+        grid on;
+        xlabel('log_{10} \mu/GeV');
+        title([num2str(nscale,3),'m_N = v_\sigma = ', num2str(vS,3), ' GeV, Y_{F/Q} = ', num2str(yf0,3), ', \lambda_{\sigma} = ', num2str(lambdaS0,3), ', \lambda_{H\sigma} = ', num2str(lambdaHS0,3)],'FontSize',15);
+        legend('{\fontsize{15}\lambda_H}','Location','NorthWest');
+%        fprintf('Limit = %f\n', limit);
     end
     if(~debug)
         if k < 10

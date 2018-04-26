@@ -26,18 +26,25 @@ xlim([110 140]);
 ylim([164 182]);
 
 % Fill with color
+green = [0 1 0];
 cTop = cc(2,2:12);      cTop2 = cc(2,14:end);
 cHiggs = cc(1,2:12);    cHiggs2 = cc(1,14:end);
 area(cHiggs2, 182*ones(length(cHiggs2)), 'FaceColor', 'Yellow', 'LineStyle', 'none');
-area(cHiggs2, cTop2,'FaceColor','Green','LineStyle','none');
-area([cHiggs2(1) cHiggs(end)], mtRange(end)*[1 1],'FaceColor','Green','LineStyle','none');
+area(cHiggs2, cTop2,'FaceColor',green,'LineStyle','none');
+area([cHiggs2(1) cHiggs(end)], mtRange(end)*[1 1],'FaceColor',green,'LineStyle','none');
 area([cHiggs mhRange(end)], [cTop mtRange(end)],'FaceColor','Cyan','LineStyle','none');
+alfa = area(mhRange, 182*ones(length(mhRange)),'FaceColor', [0.91 0.41 0.17], 'LineStyle', 'none'); 
+set(alfa,'facealpha',.75)
 
 % Experimental range in (mHiggs, mTop) plane
 h = rectangle;
 h.Position = [mhLower mtLower 2*dmh 2*dmt];
 h.FaceColor = 'magenta';
 plot(mh,mt,'k.','MarkerSize',20);
-text(135,166,'Unstable region','FontSize',20,'Rotation',90);
-text(120,174','Stability region','FontSize',20,'Rotation',45);
-text(111,177.2','Metastability region','FontSize',18,'Rotation',28);
+fs = 20;
+text(112,168,'Excluded due to \lambda_{H\sigma}','FontSize',fs+5,'Color','Red');
+text(112,167,'non-perturbativity','FontSize',fs+5,'Color','Red');
+text(135,165,'Non-perturbativity','FontSize',fs,'Rotation',90);
+text(136.5,165,'region','FontSize',fs,'Rotation',90);
+text(117,171','Stability region','FontSize',fs,'Rotation',50);
+text(111,177.45','Metastability region','FontSize',fs-2,'Rotation',27);

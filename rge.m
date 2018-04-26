@@ -14,7 +14,8 @@ mh = 125.09;         % Higgs mass
 mtau = 1.777;        % Tau mass
 v = 246;             % SM Higgs VEV
 vS = 1e10;           % Scalar singlet VEV
-mn = 0.01*vS;         % Heavy neutrino mass
+nscale = 100;
+mn = vS/nscale;         % Heavy neutrino mass
 yt0 = mt*sqrt(2)/v;  % Top quark Yukawa coupling
 yb0 = mb*sqrt(2)/v;  % Bottom quark Yukawa coupling
 ytau0 = mtau*sqrt(2)/v;  % Tau Yukawa coupling
@@ -87,6 +88,18 @@ lambdaS = x(:,11);  lambdaHS = x(:,12);   muS = sqrt(x(:,13));       yn = x(:,14
 % h = suptitle(['5m_N = v_\sigma = ', num2str(vS,3), ' GeV, \lambda_S = ', num2str(lambdaS0), ', \lambda_{HS} = ', num2str(lambdaHS0), ', Y_F = ', num2str(yf0) , ', Y_Q = ', num2str(yq0)]);
 % set(h,'FontSize',20,'FontWeight','bold');
 
+% figure;
+% plot(t, g1,'LineWidth',2); hold on; plot(t, g2,'LineWidth',2); plot(t, g3, 'LineWidth', 2); 
+% %ylim([0 0.025]);
+% xlim([2 19]);
+% xlabel('log_{10} \mu/GeV');
+% legend('{\fontsize{15}g_1}','{\fontsize{15}g_2}','{\fontsize{15}g_3}','Location','NorthEast');
+% set(gca,'XMinorTick','on','YMinorTick','on');
+% set(gca,'LineWidth',2,'TickLength',[0.025 0.025]);
+% set(gca,'FontSize',15);
+% title([num2str(nscale,3),'m_N = v_\sigma = ', num2str(vS,3), ' GeV, Y_{F/Q} = ', num2str(yf0,3), ', \lambda_{\sigma} = ', num2str(lambdaS0,3), ', \lambda_{H\sigma} = ', num2str(lambdaHS0,3)],'FontSize',15);
+% grid on;
+
 figure;
 plot(t, yb,'LineWidth',2); hold on; plot(t, ytau,'LineWidth',2); 
 ylim([0 0.025]); xlim([2 19]);
@@ -95,4 +108,4 @@ legend('{\fontsize{15}y_b}','{\fontsize{15}y_\tau}','Location','NorthEast');
 set(gca,'XMinorTick','on','YMinorTick','on');
 set(gca,'LineWidth',2,'TickLength',[0.025 0.025]);
 set(gca,'FontSize',15);
-grid on;
+title([num2str(nscale,3),'m_N = v_\sigma = ', num2str(vS,3), ' GeV, Y_{F/Q} = ', num2str(yf0,3), ', \lambda_{\sigma} = ', num2str(lambdaS0,3), ', \lambda_{H\sigma} = ', num2str(lambdaHS0,3)],'FontSize',15); grid on;
