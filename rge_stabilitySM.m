@@ -71,7 +71,7 @@ for mt = mtRange
         [t, x] = ode45('rgeq_SM',Escale,x0,opts); % ODE-function, solution span, init-values, (opt.) error tolerance
         % All parameters
         % g1 = x(:,1);  g2 = x(:,2);  g3 = x(:,3);  yt = x(:,4);  yb = x(:,5); ytau = x(:,6);
-        lambdaH = x(:,7);   %muH = sqrt(x(:,8));
+        lambdaH = x(:,7);   muH = x(:,8);
         % Check if the potential is stable, ie. if quartic couplings are
         % positive
             for k = 1:length(lambdaH)
@@ -84,24 +84,32 @@ for mt = mtRange
     end
 end
 if (~lambdaOnly)
-figure;
-contour(mhRange, mtRange, stabilityLimit,'ShowText','On');
-xlabel('m_H/GeV'); ylabel('m_t/GeV');
-set(gca,'FontSize',15);
+    figure;
+    contour(mhRange, mtRange, stabilityLimit,'ShowText','On');
+    xlabel('m_H/GeV'); ylabel('m_t/GeV');
+    set(gca,'FontSize',15);
 else
-    plot(t, lambdaH,'LineWidth',2); hold on; h = vline(limit,'r','{\fontsize{20}Stability bound}');
+%     plot(t, lambdaH,'LineWidth',2); hold on; h = vline(limit,'r','{\fontsize{20}Stability bound}');
+%     set(gca,'XMinorTick','on','YMinorTick','on');
+%     set(gca,'LineWidth',2,'TickLength',[0.025 0.025]);
+%     set(gca,'FontSize',15);
+%     grid on;
+%     xlabel('log_{10} \mu/GeV');
+%     xlim([2 20]);    ylim([-0.1 0.3]);
+%     title(['m_t = ', num2str(mt,5), ' GeV, m_H = ', num2str(mh,5),' GeV'],'FontSize',20);
+%     legend('{\fontsize{15}\lambda_H}','Location','NorthWest');
+%     h = area([19+log(1.22) 20], [1.2 1.2], 'FaceColor', 'Black', 'LineStyle', 'none');
+%     h2 = area([0 20], [-0.1 -0.1], 'FaceColor', 'Black', 'LineStyle', 'none');
+%     set(h,'facealpha',.25);
+%     set(h2,'facealpha',.25);
+%     figure;
+    plot(t, muH,'LineWidth',2);
+    xlabel('log_{10} \mu/GeV');
+    ylabel('m_H (GeV)');
     set(gca,'XMinorTick','on','YMinorTick','on');
     set(gca,'LineWidth',2,'TickLength',[0.025 0.025]);
     set(gca,'FontSize',15);
     grid on;
-    xlabel('log_{10} \mu/GeV');
-    xlim([2 20]);    ylim([-0.1 0.3]);
-    title(['m_t = ', num2str(mt,5), ' GeV, m_H = ', num2str(mh,5),' GeV'],'FontSize',20);
-    legend('{\fontsize{15}\lambda_H}','Location','NorthWest');
-    h = area([19+log(1.22) 20], [1.2 1.2], 'FaceColor', 'Black', 'LineStyle', 'none');
-    h2 = area([0 20], [-0.1 -0.1], 'FaceColor', 'Black', 'LineStyle', 'none');
-    set(h,'facealpha',.25);
-    set(h2,'facealpha',.25);
 end
 if(~debug)
     fprintf('Time elapsed: %.2f seconds.\n', cputime - timeElapsed);
