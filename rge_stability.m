@@ -37,8 +37,8 @@ yn0 = mn*sqrt(2)/vS;    % Majorana neutrino Yukawa coupling mn*sqrt(2)/vS
 
 % Scalar potential parameters
 lambdaH0 = mh^2/(v^2);% SM Higgs self-coupling at MZ
-lambdaS0 = 5e-9;        % Scalar singlet self-coupling 5e-9
-lambdaHS0 = 0.3;       % Scalar singlet-doublet coupling 7e-6
+lambdaS0 = 1e-10;        % Scalar singlet self-coupling 5e-9
+lambdaHS0 = -1.1;       % Scalar singlet-doublet coupling 7e-6
 muH0 = mh;
 muS0 = vS*sqrt(lambdaS0); % Scalar singlet mu parameter
 if(bestFit)
@@ -128,7 +128,7 @@ if (bestFit)
     set(gca,'FontSize',15);
     grid on;
     xlim([2 20]);
-    ylim([-0.1 0.3]);
+    ylim([-0.1 1.2]);
 %    vline(limit,'r');
     h = area([19+log(1.22) 20], [1.2 1.2], 'FaceColor', 'Black', 'LineStyle', 'none');
     h2 = area([0 20], [-0.1 -0.1], 'FaceColor', 'Black', 'LineStyle', 'none');

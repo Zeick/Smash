@@ -7,11 +7,11 @@
 % v = mu/sqrt(lambda)
 clear;
 timeElapsed = cputime;
-debug = false;        % False = save data, no output in console
-prefix = 'May2_4-';
+debug = true;        % False = save data, no output in console
+prefix = 'May3_1-';
 limit = -1;
 lambdaOnly = false;
-range = false;
+lambdaRange = false;
 % Masses, VEVs and Yukawa couplings at energy scale MZ
 mt = 172.44;         % Top quark mass 172.44
 mb = 4.18;           % Bottom quark mass
@@ -38,27 +38,26 @@ yn0 = mn*sqrt(2)/vS;    % Majorana neutrino Yukawa coupling mn*sqrt(2)/vS
 
 % Scalar potential parameters
 lambdaH0 = mh^2/(v^2);  % SM Higgs self-coupling at MZ
-lambdaS0 = 5e-9;        % Scalar singlet self-coupling 5e-9
-lambdaHS0 = 1e-6;       % Scalar singlet-doublet coupling 7e-6
+lambdaS0 = 5e-10;        % Scalar singlet self-coupling 5e-9
+lambdaHS0 = -0.32;       % Scalar singlet-doublet coupling 7e-6
 muH0 = mh;
 muS0 = vS*sqrt(lambdaS0); % Scalar singlet mu parameter
-if(range)
-%    lhsRange = 0:0.005:0.5;
+if(lambdaRange)
     lhsRange = -10:0.2:-0.4;
     vsRange = 8;
 else
    lhsRange = log10(lambdaHS0);
-   vsRange = 8:0.2:18;
+   vsRange = 16; %8:0.2:18;
 end
 limits = zeros(1,length(lhsRange));
 n=0;
 k=0;
 for lambdaHS0 = 10.^lhsRange
-    if range
+    if lambdaRange
        k = k+1; 
     end
     for vS = 10.^vsRange
-        if ~range
+        if ~lambdaRange
             k = k+1;
         end
         mn = 1/nscale*vS;       % Heavy neutrino mass 1/nscale*vs
@@ -80,19 +79,21 @@ for lambdaHS0 = 10.^lhsRange
         yf = x(:,7);  lambdaH = x(:,8);           muH = sqrt(x(:,9));        yq = x(:,10);
         lambdaS = x(:,11);  lambdaHS = x(:,12);   muS = sqrt(x(:,13));       yn = x(:,14);
         if(~debug)
-            f = figure('visible', 'off');        
+            f = figure('visible', 'off');
+        else
+            figure;
         end
         if(~lambdaOnly)
     %        subplot(1,2,1);
             plot(t, log10(muH),'LineWidth',2); %hold on; plot(t, log(muS));
-            xlim([2 20]); ylim([0 20]); 
+            xlim([2 20]); ylim([2 20]); 
             set(gca,'XMinorTick','on','YMinorTick','on');
             set(gca,'LineWidth',2,'TickLength',[0.025 0.025]);
             set(gca,'FontSize',15);
             xlabel('log_{10} \mu/GeV');
             ylabel('log_{10} m/GeV');
             grid on;
-            title([num2str(nscale,3),'m_N = v_\sigma = ', num2str(vS,3), ' GeV, Y_{F/Q} = ', num2str(yf0,3), ', \lambda_{\sigma} = ', num2str(lambdaS0,3), ', \lambda_{H\sigma} = ', num2str(lambdaHS0,3)],'FontSize',15);
+            title([num2str(nscale,3),'m_N = v_\sigma = ', num2str(vS,3), ' GeV, Y_{F/Q} = ', num2str(yf0,3), ', \lambda_{\sigma} = ', num2str(lambdaS0,3), ', \lambda_{H\sigma} = ', num2str(real(lambdaHS0),3)],'FontSize',15);
             hold on;
             plot([2 20],log10([mh 151]),'LineWidth',2);
             plot(t, log10(muS),'LineWidth',2);
@@ -123,7 +124,7 @@ for lambdaHS0 = 10.^lhsRange
             set(gca,'FontSize',15);
             grid on;
             xlabel('log_{10} \mu/GeV');
-            title([num2str(nscale,3),'m_N = v_\sigma = ', num2str(vS,3), ' GeV, Y_{F/Q} = ', num2str(yf0,3), ', \lambda_{\sigma} = ', num2str(lambdaS0,3), ', \lambda_{H\sigma} = ', num2str(lambdaHS0,3)],'FontSize',15);
+            title([num2str(nscale,3),'m_N = v_\sigma = ', num2str(vS,3), ' GeV, Y_{F/Q} = ', num2str(yf0,3), ', \lambda_{\sigma} = ', num2str(lambdaS0,3), ', \lambda_{H\sigma} = ', num2str(real(lambdaHS0),3)],'FontSize',15);
             legend('{\fontsize{15}\lambda_H}','Location','NorthWest');
     %        fprintf('Limit = %f\n', limit);
         end
